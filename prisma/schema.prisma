@@ -21,13 +21,10 @@ model Post {
 
 model User {
     id                       String            @id @default(cuid()) // The primary key
-    external_id              String // External ID field
     first_name               String // First name of the user
     last_name                String // Last name of the user
-    birthday                 String? // Nullable birthday field
     created_at               DateTime          @default(now()) // Creation timestamp
     updated_at               DateTime          @updatedAt // Auto-updated timestamp
-    last_sign_in_at          DateTime? // Nullable field for last sign-in timestamp
     email_addresses          EmailAddress[] // Relation to another model
     external_accounts        ExternalAccount[] // Relation to external accounts
     gender                   String? // Nullable gender field

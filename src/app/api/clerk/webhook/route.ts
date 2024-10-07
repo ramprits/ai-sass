@@ -1,14 +1,28 @@
+import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
+import { db } from "~/server/db";
 
 type UserType = {
-  data: {
-    email: string;
-    firstName: string;
-    lastName: string;
-  };
+  data: Prisma.UserCreateInput;
 };
+
 export const POST = async (request: Request) => {
-  const userBody: UserType = (await request.json()) as UserType;
-  console.log("clerk sending data", userBody);
-  return NextResponse.json({ message: "", data: userBody }, { status: 201 });
+  const userBody = (await request.json()) as UserType;
+  const { data } = userBody;
+  try {
+    const createdUser = await db.user.create({
+      data: {
+        ...data,
+      },
+    });
+    return NextResponse.json(
+      { message: "User created successfully", data: createdUser },
+      { status: 201 },
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to create user", error: error },
+      { status: 400 },
+    );
+  }
 };
