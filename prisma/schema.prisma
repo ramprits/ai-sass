@@ -20,56 +20,12 @@ model Post {
 }
 
 model User {
-    id                       String            @id @default(cuid()) // The primary key
-    first_name               String // First name of the user
-    last_name                String // Last name of the user
-    created_at               DateTime          @default(now()) // Creation timestamp
-    updated_at               DateTime          @updatedAt // Auto-updated timestamp
-    email_addresses          EmailAddress[] // Relation to another model
-    external_accounts        ExternalAccount[] // Relation to external accounts
-    gender                   String? // Nullable gender field
-    image_url                String? // Profile image URL
-    password_enabled         Boolean // Boolean for password-enabled status
-    phone_numbers            PhoneNumber[] // Relation to phone numbers
-    primary_email_address_id String? // Nullable foreign key
-    primary_phone_number_id  String? // Nullable foreign key
-    primary_web3_wallet_id   String? // Nullable foreign key
-    profile_image_url        String? // URL to profile image
-    two_factor_enabled       Boolean // Two-factor authentication enabled or not
-    public_metadata          Json // Public metadata as JSON
-    private_metadata         Json // Private metadata as JSON
-    unsafe_metadata          Json // Unsafe metadata as JSON
-    username                 String? // Nullable username field
-    web3_wallets             Web3Wallet[] // Relation to web3 wallets
-}
-
-model EmailAddress {
-    id       String  @id @default(cuid())
-    user     User    @relation(fields: [userId], references: [id])
-    userId   String
-    email    String
-    verified Boolean
-}
-
-model ExternalAccount {
-    id          String @id @default(cuid())
-    user        User   @relation(fields: [userId], references: [id])
-    userId      String
-    provider    String
-    provider_id String
-}
-
-model PhoneNumber {
-    id       String  @id @default(cuid())
-    user     User    @relation(fields: [userId], references: [id])
-    userId   String
-    number   String
-    verified Boolean
-}
-
-model Web3Wallet {
-    id             String @id @default(cuid())
-    user           User   @relation(fields: [userId], references: [id])
-    userId         String
-    wallet_address String
+    id         String    @id @default(cuid()) // The primary key
+    first_name String // First name of the user
+    last_name  String // Last name of the user
+    email      String?   @unique // Relation to another model
+    gender     String? // Nullable gender field
+    image_url  String? // Profile image URL
+    created_at DateTime? @default(now()) // Creation timestamp
+    updated_at DateTime? @updatedAt // Auto-updated timestamp
 }

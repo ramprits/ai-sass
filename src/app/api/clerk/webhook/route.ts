@@ -1,9 +1,18 @@
-import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { db } from "~/server/db";
 
 type UserType = {
-  data: Prisma.UserCreateInput;
+  data: {
+    first_name: string;
+    last_name: string;
+    email_addresses?: [
+      {
+        email_address: string;
+      },
+    ];
+    gender?: string | null;
+    image_url?: string | null;
+  };
 };
 
 export const POST = async (request: Request) => {
@@ -12,7 +21,11 @@ export const POST = async (request: Request) => {
   try {
     const createdUser = await db.user.create({
       data: {
-        ...data,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data?.email_addresses?.at(0)?.email_address,
+        gender: data.gender,
+        image_url: data.image_url,
       },
     });
     return NextResponse.json(
